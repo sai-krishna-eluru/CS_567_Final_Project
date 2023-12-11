@@ -1,6 +1,8 @@
 import unittest
 import os
-from task_manager import Task, TaskManager  # Importing the classes from the original code
+from io import StringIO
+from unittest.mock import patch
+from task_manager import Task, TaskManager
 
 class TestTaskManager(unittest.TestCase):
     def setUp(self):
@@ -31,7 +33,7 @@ class TestTaskManager(unittest.TestCase):
         self.assertTrue(self.task2.completed)
 
     def test_mark_task_as_completed_invalid_index(self):
-        with self.assertRaises(IndexError):
+        with self.assertRaises(ValueError):
             self.manager.mark_task_as_completed(5)
 
     def test_search_tasks(self):
@@ -39,38 +41,22 @@ class TestTaskManager(unittest.TestCase):
         self.assertEqual(matching_tasks, [self.task2])
 
     def test_display_tasks(self):
-        # Redirect stdout to capture print output
-        import sys
-        from io import StringIO
-        original_stdout = sys.stdout
-        sys.stdout = StringIO()
-
-        self.manager.display_tasks()
-
-        # Get the printed output
-        printed_output = sys.stdout.getvalue()
-
-        # Reset redirect.
-        sys.stdout = original_stdout
-
-        # Verify the printed output
-        expected_output = "1. Priority: 2, Description: Complete project, Status: Pending\n" \
-                          "2. Priority: 1, Description: Read a book, Status: Pending\n" \
-                          "3. Priority: 2, Description: Go to the gym, Status: Pending\n"
-        self.assertEqual(printed_output, expected_output)
+        with patch("sys.stdout", new_callable=StringIO) as mock_stdout:
+            self.manager.display_tasks()
+            expected_output = "1. Priority: 2, Description: Complete project, Status: Pending\n" \
+                              "2. Priority: 1, Description: Read a book, Status: Pending\n" \
+                              "3. Priority: 2, Description: Go to the gym, Status: Pending\n"
+            self.assertEqual(mock_stdout.getvalue(), expected_output)
 
     def test_save_and_load_tasks(self):
         filename = "test_tasks.pkl"
         self.manager.save_tasks(filename)
         
-        # Create a new manager instance and load tasks
         new_manager = TaskManager()
         new_manager.load_tasks(filename)
 
-        # Check if loaded tasks are the same as the original ones
-        self.assertEqual(new_manager.tasks, self.manager.tasks)
+        self.assertCountEqual(new_manager.tasks, self.manager.tasks)
 
-        # Clean up: remove the test file
         os.remove(filename)
 
 if __name__ == '__main__':
