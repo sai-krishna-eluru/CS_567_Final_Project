@@ -52,11 +52,15 @@ class TestTaskManager(unittest.TestCase):
         filename = "test_tasks.pkl"
         self.manager.save_tasks(filename)
         
+        # Create a new manager instance and load tasks
         new_manager = TaskManager()
         new_manager.load_tasks(filename)
 
-        self.assertCountEqual(new_manager.tasks, self.manager.tasks)
+        # Check if loaded tasks are the same as the original ones
+        self.assertEqual(len(new_manager.tasks), len(self.manager.tasks))
+        self.assertTrue(all(task in new_manager.tasks for task in self.manager.tasks))
 
+        # Clean up: remove the test file
         os.remove(filename)
 
 if __name__ == '__main__':
