@@ -1,3 +1,5 @@
+# task_manager.py
+
 import pickle
 
 class Task:
@@ -24,7 +26,7 @@ class TaskManager:
             self.tasks[task_index].completed = True
             print(f"Task '{self.tasks[task_index].description}' marked as completed.")
         else:
-            print("Invalid task index.")
+            raise ValueError("Invalid task index.")
 
     def search_tasks(self, keyword):
         return [task for task in self.tasks if keyword.lower() in task.description.lower()]
@@ -81,7 +83,10 @@ if __name__ == "__main__":
             print("Task added successfully.")
         elif choice == "3":
             task_index = int(input("Enter the index of the task to mark as completed: "))
-            manager.mark_task_as_completed(task_index - 1)
+            try:
+                manager.mark_task_as_completed(task_index - 1)
+            except ValueError as e:
+                print(e)
         elif choice == "4":
             keyword = input("Enter a keyword to search for tasks: ")
             matching_tasks = manager.search_tasks(keyword)
