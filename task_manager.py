@@ -14,6 +14,7 @@ class Task:
             self.description == other.description and
             self.priority == other.priority and
             self.completed == other.completed
+        )
 
 class TaskManager:
     def __init__(self):
