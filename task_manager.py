@@ -8,6 +8,13 @@ class Task:
         self.priority = priority
         self.completed = False
 
+    def __eq__(self, other):
+        return (
+            isinstance(other, Task) and
+            self.description == other.description and
+            self.priority == other.priority and
+            self.completed == other.completed
+
 class TaskManager:
     def __init__(self):
         self.tasks = []
