@@ -1,0 +1,33 @@
+# Task Manager TSTL Script
+
+# Include the task manager implementation
+include "task_manager.py"
+
+# Test initialization
+TASKMANAGER = TaskManager()
+
+# Test adding tasks
+add_task("Complete project", 2)
+add_task("Read a book", 1)
+add_task("Go to the gym", 2)
+
+# Test displaying tasks
+display_tasks()
+
+# Test searching tasks
+search_tasks("book")
+
+# Test marking a task as completed
+mark_task_as_completed(1)
+
+# Test displaying completed tasks
+get_completed_tasks()
+
+# Test saving tasks to a file
+save_tasks("test_tasks.pkl")
+
+# Test loading tasks from a file
+load_tasks("test_tasks.pkl")
+
+# Display the final state of tasks
+display_tasks()
