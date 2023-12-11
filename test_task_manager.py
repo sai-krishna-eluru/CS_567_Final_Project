@@ -56,6 +56,10 @@ class TestTaskManager(unittest.TestCase):
         new_manager = TaskManager()
         new_manager.load_tasks(filename)
 
+        # Print tasks for debugging
+        print("Original tasks:", self.manager.tasks)
+        print("Loaded tasks:", new_manager.tasks)
+
         # Check if loaded tasks are the same as the original ones
         self.assertEqual(len(new_manager.tasks), len(self.manager.tasks))
         self.assertTrue(all(task in new_manager.tasks for task in self.manager.tasks))
