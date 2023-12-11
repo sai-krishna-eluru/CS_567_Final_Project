@@ -30,7 +30,7 @@ class TestTaskManager(unittest.TestCase):
         self.manager.mark_task_as_completed(1)
         self.assertTrue(self.task2.completed)
 
-     def test_mark_task_as_completed_invalid_index(self):
+    def test_mark_task_as_completed_invalid_index(self):
         with self.assertRaises(IndexError):
             self.manager.mark_task_as_completed(5)
 
